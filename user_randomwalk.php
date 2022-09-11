@@ -6,7 +6,15 @@ $files19 = getAllFile19();
 $files16 = getAllFile16();
 $files17 = getAllFile17();
 $files18 = getAllFile18();
-
+$files3 = getAllFile3();
+$files4 = getAllFile4();
+$files5 = getAllFile5();
+$files6 = getAllFile6();
+$files7 = getAllFile7();
+$files8 = getAllFile8();
+$files9 = getAllFile9();
+$files10 = getAllFile10();
+$files11 = getAllFile11();
 ?>
 
 <!DOCTYPE html>
@@ -43,6 +51,48 @@ $files18 = getAllFile18();
         </nav>
     </header>
     <div>
+        <form method=”get” action=http://www.google.co.jp/search target=”_blank”>
+            <input type=”text” name="query" size="30" maxlength="255" value="">
+            <input type=”submit” name="btn" value="検索">
+            <input type="hidden" name="hl" value="ja">
+            <input type="hidden" name="sitesearch" value="">
+        </form>
+        <div>
+            <h3>あなたへのおすすめ</h><br>
+            <?php foreach($files3 as $file3): ?>
+                <img src="<?php echo "{$file3['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+            <?php foreach($files4 as $file4): ?>
+                <img src="<?php echo "{$file4['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+            <?php foreach($files5 as $file5): ?>
+                <img src="<?php echo "{$file5['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+        </div>
+        <div>
+            <h3>新着</h><br>
+            <?php foreach($files6 as $file6): ?>
+                <img src="<?php echo "{$file6['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+            <?php foreach($files7 as $file7): ?>
+                <img src="<?php echo "{$file7['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+            <?php foreach($files8 as $file8): ?>
+                <img src="<?php echo "{$file8['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+        </div>
+        <div>
+            <h3>today's pick up</h><br>
+            <?php foreach($files9 as $file9): ?>
+                <img src="<?php echo "{$file9['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+            <?php foreach($files10 as $file10): ?>
+                <img src="<?php echo "{$file10['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+            <?php foreach($files11 as $file11): ?>
+                <img src="<?php echo "{$file11['file_path']}"; ?>" width="100px" height="100px">
+            <?php endforeach; ?>
+        </div><br>
 
     </div>
     <footer class="footer">

@@ -7,47 +7,6 @@ $files15 = getAllFile15();
 $files14 = getAllFile14();
 $files13 = getAllFile13();
 
-$pdo = connect_to_db();
-$sql_pv = 'SELECT count(DISTINCT session_id) AS PV FROM trackings WHERE hotels_id = 1';
-$stmt_pv = $pdo->prepare($sql_pv);
-try {
-  $status_pv = $stmt_pv->execute();
-} catch (PDOException $e) {
-  echo json_encode(["sql error" => "{$e->getMessage()}"]);
-  exit();
-}
-$record_pv = $stmt_pv->fetch(PDO::FETCH_ASSOC);
-
-$sql_sls = 'SELECT SUM(price) AS Sales FROM bookings WHERE hotels_id = 1';
-$stmt_sls = $pdo->prepare($sql_sls);
-try {
-  $status_sls = $stmt_sls->execute();
-} catch (PDOException $e) {
-  echo json_encode(["sql error" => "{$e->getMessage()}"]);
-  exit();
-}
-$record_sls = $stmt_sls->fetch(PDO::FETCH_ASSOC);
-
-$sql_bk = 'SELECT count(DISTINCT users_id) AS Books FROM bookings WHERE hotels_id = 1';
-$stmt_bk = $pdo->prepare($sql_bk);
-try {
-  $status_bk = $stmt_bk->execute();
-} catch (PDOException $e) {
-  echo json_encode(["sql error" => "{$e->getMessage()}"]);
-  exit();
-}
-$record_bk = $stmt_bk->fetch(PDO::FETCH_ASSOC);
-
-$sql_ps = 'SELECT COUNT(id) AS Persons FROM bookings WHERE hotels_id = 1 AND date = CURDATE()';
-$stmt_ps = $pdo->prepare($sql_ps);
-try {
-  $status_ps = $stmt_ps->execute();
-} catch (PDOException $e) {
-  echo json_encode(["sql error" => "{$e->getMessage()}"]);
-  exit();
-}
-$record_ps = $stmt_ps->fetch(PDO::FETCH_ASSOC);
-
 ?>
 
 <!DOCTYPE html>
@@ -83,20 +42,99 @@ $record_ps = $stmt_ps->fetch(PDO::FETCH_ASSOC);
             </ul>
         </nav>
     </header>
-    <div class="kpi">
-        <div class="kpi">
-            <?= $record_pv["PV"] ?>
-        </div>
-       <div class="kpi">
-            <?= $record_sls["Sales"] ?>
-        </div>
-        <div class="kpi">
-            <?= $record_bk["Books"] ?>
-        </div>
-        <div class="kpi">
-            <?= $record_ps["Persons"] ?>
-        </div>
+    <div>
+        <canvas id="myBarChart"></canvas>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+        <script>
+            var ctx = document.getElementById("myBarChart");
+            var myBarChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                labels: ['8月1日', '8月2日', '8月3日', '8月4日', '8月5日', '8月6日', '8月7日'],
+                datasets: [
+                    {
+                    label: 'OTA',
+                    data: [62, 65, 93, 85, 51, 66, 47],
+                    backgroundColor: "rgba(219,39,91,0.5)"
+                    },{
+                    label: 'SNS',
+                    data: [55, 45, 73, 75, 41, 45, 58],
+                    backgroundColor: "rgba(130,201,169,0.5)"
+                    },{
+                    label: '公式HP',
+                    data: [33, 45, 62, 55, 31, 45, 38],
+                    backgroundColor: "rgba(255,183,76,0.5)"
+                    }
+                ]
+                },
+                options: {
+                title: {
+                    display: true,
+                    text: 'チャネル別予約数'
+                },
+                scales: {
+                    yAxes: [{
+                    ticks: {
+                        suggestedMax: 100,
+                        suggestedMin: 0,
+                        stepSize: 25,
+                        callback: function(value, index, values){
+                        return  value +  '人'
+                        }
+                    }
+                    }]
+                },
+                }
+            });
+        </script>
     </div>
+    <body>
+        <canvas id="myRaderChart"></canvas>
+        <!-- CDN -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
+
+        <script>
+            var ctx = document.getElementById("myRaderChart");
+            var myRadarChart = new Chart(ctx, {
+                type: 'radar', 
+                data: { 
+                    labels: ["内装", "設備", "接客", "料理", "サービス"],
+                    datasets: [{
+                        label: 'RoomA',
+                        data: [92, 72, 86, 74, 86],
+                        backgroundColor: 'RGBA(225,95,150, 0.5)',
+                        borderColor: 'RGBA(225,95,150, 1)',
+                        borderWidth: 1,
+                        pointBackgroundColor: 'RGB(46,106,177)'
+                    }, {
+                        label: 'RoomB',
+                        data: [73, 95, 80, 87, 79],
+                        backgroundColor: 'RGBA(115,255,25, 0.5)',
+                        borderColor: 'RGBA(115,255,25, 1)',
+                        borderWidth: 1,
+                        pointBackgroundColor: 'RGB(46,106,177)'
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: 'お客様満足度'
+                    },
+                    scale:{
+                        ticks:{
+                            suggestedMin: 0,
+                            suggestedMax: 100,
+                            stepSize: 25,
+                            callback: function(value, index, values){
+                                return  value +  '点'
+                            }
+                        }
+                    }
+                }
+            });
+        </script>
+    </body>
     <footer class="footer">
         <nav class="global-nav">
             <ul class="nav-list">
