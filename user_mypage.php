@@ -7,6 +7,32 @@ $files16 = getAllFile16();
 $files17 = getAllFile17();
 $files18 = getAllFile18();
 
+$pdo = connect_to_db();
+$sql = 'SELECT * FROM bookings LEFT JOIN hotels ON bookings.hotels_id = hotels.id WHERE users_id = 1';
+$stmt = $pdo->prepare($sql);
+try {
+  $status = $stmt->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+$result = $stmt->fetchall(PDO::FETCH_ASSOC);
+
+$output = "";
+foreach ($result as $record) {
+  $output .= "
+    <div>
+        <tr>
+        <td>ホテル名：{$record["name"]}</td><br>
+        <td>宿泊日：{$record["date"]}</td><br>
+        <td>チェックイン時間：{$record["checkin_time"]}</td><br>
+        <td>宿泊人数：{$record["persons"]}名様</td><br>
+        <td>ご料金：{$record["price"]}円</td><br>
+        </tr>
+    </div><br>
+  ";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +69,9 @@ $files18 = getAllFile18();
         </nav>
     </header>
     <div>
-
+    <tbody>
+      <?= $output ?>
+    </tbody>
     </div>
     <footer class="footer">
         <nav class="global-nav">
