@@ -10,7 +10,7 @@ $files = getAllFile12();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ユーザーログイン</title>
+    <title>クライアントログイン</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
     <link rel="stylesheet" href="Login.css" type="text/css">
 </head>
@@ -30,7 +30,7 @@ $files = getAllFile12();
             /* 縦横中央 */
         }
     </style>
-    <form name="login_form" action="user_login_act.php" method="POST">
+    <form name="login_form" action="client_login_act.php" method="POST">
         <div class="login_form_top">
             <h1>LOGIN</h1>
             <div class="login_form_btm">

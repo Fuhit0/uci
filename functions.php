@@ -2,9 +2,9 @@
 //DB接続
 function connect_to_db()
 {
-  $dbn='mysql:dbname=origojapan_uci;charset=utf8mb4;port=3306;host=mysql639.db.sakura.ne.jp';
-  $user = 'origojapan';
-  $pwd = 't=Z49vd+Cnr3';
+  $dbn='mysql:dbname=uci;charset=utf8mb4;port=3306;host=localhost';
+  $user = 'root';
+  $pwd = '';
   try {
     return new PDO($dbn, $user, $pwd);
   } catch (PDOException $e) {
