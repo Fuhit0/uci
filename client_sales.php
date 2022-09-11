@@ -7,6 +7,47 @@ $files15 = getAllFile15();
 $files14 = getAllFile14();
 $files13 = getAllFile13();
 
+$pdo = connect_to_db();
+$sql_pv = 'SELECT count(DISTINCT session_id) AS PV FROM trackings WHERE hotels_id = 1';
+$stmt_pv = $pdo->prepare($sql_pv);
+try {
+  $status_pv = $stmt_pv->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+$record_pv = $stmt_pv->fetch(PDO::FETCH_ASSOC);
+
+$sql_sls = 'SELECT SUM(price) AS Sales FROM bookings WHERE hotels_id = 1';
+$stmt_sls = $pdo->prepare($sql_sls);
+try {
+  $status_sls = $stmt_sls->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+$record_sls = $stmt_sls->fetch(PDO::FETCH_ASSOC);
+
+$sql_bk = 'SELECT count(DISTINCT users_id) AS Books FROM bookings WHERE hotels_id = 1';
+$stmt_bk = $pdo->prepare($sql_bk);
+try {
+  $status_bk = $stmt_bk->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+$record_bk = $stmt_bk->fetch(PDO::FETCH_ASSOC);
+
+$sql_ps = 'SELECT COUNT(id) AS Persons FROM bookings WHERE hotels_id = 1 AND date = CURDATE()';
+$stmt_ps = $pdo->prepare($sql_ps);
+try {
+  $status_ps = $stmt_ps->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+$record_ps = $stmt_ps->fetch(PDO::FETCH_ASSOC);
+
 ?>
 
 <!DOCTYPE html>
@@ -42,8 +83,19 @@ $files13 = getAllFile13();
             </ul>
         </nav>
     </header>
-    <div>
-
+    <div class="kpi">
+        <div class="kpi">
+            <?= $record_pv["PV"] ?>
+        </div>
+       <div class="kpi">
+            <?= $record_sls["Sales"] ?>
+        </div>
+        <div class="kpi">
+            <?= $record_bk["Books"] ?>
+        </div>
+        <div class="kpi">
+            <?= $record_ps["Persons"] ?>
+        </div>
     </div>
     <footer class="footer">
         <nav class="global-nav">
