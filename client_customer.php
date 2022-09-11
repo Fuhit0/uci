@@ -7,6 +7,65 @@ $files15 = getAllFile15();
 $files14 = getAllFile14();
 $files13 = getAllFile13();
 
+$pdo = connect_to_db();
+$sql = 'SELECT * FROM bookings LEFT JOIN users ON bookings.users_id = users.id WHERE hotels_id = 1 AND date = CURDATE() ';
+$stmt = $pdo->prepare($sql);
+try {
+  $status = $stmt->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+$result = $stmt->fetchall(PDO::FETCH_ASSOC);
+
+$output = "";
+foreach ($result as $record) {
+  $output .= "
+    <div>
+    <h3>本日のお客様</h3>
+    <table>
+        <tr>
+            <th>お客様名</th>
+            <th>ご宿泊日</th>
+            <th>チェックイン時間</th>
+            <th>ご宿泊人数</th>
+            <th>ご料金</th>
+        </tr>
+        <tr>
+        <td>お客様：{$record["name"]}様</td>
+        <td>宿泊日：{$record["date"]}</td>
+        <td>チェックイン時間：{$record["checkin_time"]}</td>
+        <td>宿泊人数：{$record["persons"]}名様</td>
+        <td>ご料金：{$record["price"]}円</td>
+        </tr>
+    </table>
+    </div><br>
+  ";
+}
+
+$sql2 = 'SELECT * FROM bookings LEFT JOIN users ON bookings.users_id = users.id WHERE hotels_id = 1 ';
+$stmt2 = $pdo->prepare($sql2);
+try {
+  $status2 = $stmt2->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+$result2 = $stmt2->fetchall(PDO::FETCH_ASSOC);
+
+$output2 = "";
+foreach ($result2 as $record2) {
+  $output2 .= "
+        <tr>
+        <td>お客様：{$record2["name"]}</td>
+        <td>宿泊日：{$record2["date"]}</td>
+        <td>チェックイン時間：{$record2["checkin_time"]}</td>
+        <td>宿泊人数：{$record2["persons"]}名様</td>
+        <td>ご料金：{$record2["price"]}円</td>
+        </tr>
+  ";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +102,24 @@ $files13 = getAllFile13();
         </nav>
     </header>
     <div>
-
+    <tbody>
+      <?= $output ?>
+    </tbody>
+    <tbody>
+        <div>
+            <h3>全てのお客様</h3>
+            <table>
+                <tr>
+                    <th>お客様名</th>
+                    <th>ご宿泊日</th>
+                    <th>チェックイン時間</th>
+                    <th>ご宿泊人数</th>
+                    <th>ご料金</th>
+                </tr>   
+            <?= $output2 ?>
+            </table>
+        </div>
+    </tbody>
     </div>
     <footer class="footer">
         <nav class="global-nav">
