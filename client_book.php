@@ -7,6 +7,38 @@ $files15 = getAllFile15();
 $files14 = getAllFile14();
 $files13 = getAllFile13();
 
+//stocsから自宿の在庫データを参照する
+$pdo = connect_to_db();
+$sql = 'SELECT * FROM stocks WHERE hotels_id = 1 AND date >= CURDATE()' ;
+$stmt = $pdo->prepare($sql);
+
+try {
+  $status = $stmt->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$output = "";
+foreach ($result as $record) {
+  $output .= "
+    <tr>
+    <form action='client_book_update.php' method='POST'>
+      <td>{$record["date"]}</td>
+      <td>
+        <input type='hidden' name='date' value='{$record["date"]}'>
+        <input type='text' name='stop_flg' value='{$record["stop_flg"]}'>
+        <input type='hidden' name='id' value='{$record["id"]}'>
+      </td>
+      <td><button>更新</button></td>
+    </form>
+    </tr>
+  ";
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +75,9 @@ $files13 = getAllFile13();
         </nav>
     </header>
     <div>
-
+        <table>
+  <?= $output ?>
+  </table>
     </div>
     <footer class="footer">
         <nav class="global-nav">

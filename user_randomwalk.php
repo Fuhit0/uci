@@ -15,6 +15,100 @@ $files8 = getAllFile8();
 $files9 = getAllFile9();
 $files10 = getAllFile10();
 $files11 = getAllFile11();
+
+$pdo = connect_to_db();
+$sql = 'SELECT tmp1.file_path FROM
+(SELECT 
+update_time,
+file_path,
+row_number() over(order by update_time desc)as num
+FROM files
+WHERE 
+id >2
+AND
+id <12) tmp1
+Where 
+tmp1.num=1
+OR
+tmp1.num=2
+OR
+tmp1.num=3
+' ;
+
+$stmt = $pdo->prepare($sql);
+
+try {
+  $status = $stmt->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// var_dump($result);
+
+$sql2 = 'SELECT 
+file_path
+FROM
+(
+SELECT
+	recommed.hotels_id
+FROM
+	(SELECT DISTINCT
+		hotels_id
+	FROM
+		bookings
+	INNER JOIN
+		(SELECT DISTINCT
+			users_id
+		FROM
+			bookings
+		INNER JOIN
+			(SELECT DISTINCT
+				hotels_id
+			FROM
+				bookings
+			WHERE
+				users_id = 1) as mybookings
+		ON
+			bookings.hotels_id = mybookings.hotels_id
+		WHERE
+			users_id <>1) as others
+	ON
+		bookings.users_id = others.users_id) as recommed
+		
+LEFT OUTER JOIN
+	(SELECT DISTINCT
+		hotels_id
+	FROM
+		bookings
+	WHERE
+		users_id = 1) as mybookings2
+ON
+	recommed.hotels_id = mybookings2.hotels_id
+WHERE
+mybookings2.hotels_id is null
+) as recommend_hotels
+LEFT OUTER JOIN
+files
+ON
+recommend_hotels.hotels_id = files.id
+Limit 3
+' ;
+
+$stmt2 = $pdo->prepare($sql2);
+
+try {
+  $status2 = $stmt2->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+
+$result2 = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+
 ?>
 
 <!DOCTYPE html>
@@ -51,26 +145,26 @@ $files11 = getAllFile11();
         </nav>
     </header>
     <div>
-        <form method=”get” action=http://www.google.co.jp/search target=”_blank”>
+        <!-- <form method=”get” action=http://www.google.co.jp/search target=”_blank”>
             <input type=”text” name="query" size="30" maxlength="255" value="">
             <input type=”submit” name="btn" value="検索">
             <input type="hidden" name="hl" value="ja">
             <input type="hidden" name="sitesearch" value="">
-        </form>
+        </form> -->
         <div>
             <h3>あなたへのおすすめ</h><br>
-            <?php foreach($files3 as $file3): ?>
-                <img src="<?php echo "{$file3['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files4 as $file4): ?>
-                <img src="<?php echo "{$file4['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files5 as $file5): ?>
-                <img src="<?php echo "{$file5['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
+                <img src="<?php echo "{$result2[0]['file_path']}"; ?>" width="100px" height="100px">
+                <img src="<?php echo "{$result2[1]['file_path']}"; ?>" width="100px" height="100px">
+                <img src="<?php echo "{$result2[2]['file_path']}"; ?>" width="100px" height="100px">
         </div>
         <div>
             <h3>新着</h><br>
+                <img src="<?php echo "{$result[0]['file_path']}"; ?>" width="100px" height="100px">
+                <img src="<?php echo "{$result[1]['file_path']}"; ?>" width="100px" height="100px">
+                <img src="<?php echo "{$result[2]['file_path']}"; ?>" width="100px" height="100px">
+        </div>
+        <div>
+            <h3>today's pick up</h><br>
             <?php foreach($files6 as $file6): ?>
                 <img src="<?php echo "{$file6['file_path']}"; ?>" width="100px" height="100px">
             <?php endforeach; ?>
@@ -81,18 +175,11 @@ $files11 = getAllFile11();
                 <img src="<?php echo "{$file8['file_path']}"; ?>" width="100px" height="100px">
             <?php endforeach; ?>
         </div>
-        <div>
-            <h3>today's pick up</h><br>
-            <?php foreach($files9 as $file9): ?>
-                <img src="<?php echo "{$file9['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files10 as $file10): ?>
-                <img src="<?php echo "{$file10['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files11 as $file11): ?>
-                <img src="<?php echo "{$file11['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-        </div><br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
 
     </div>
     <footer class="footer">

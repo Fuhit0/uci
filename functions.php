@@ -26,7 +26,7 @@ function check_session_id()
 
 //ファイルデータを取得
 function getAllFile3(){
-    $sql3 = "SELECT * FROM files WHERE id =3";
+    $sql3 = "SELECT * FROM files WHERE id =1";
 
     $fileData3 = connect_to_db()->query($sql3);
 
@@ -34,7 +34,7 @@ function getAllFile3(){
 }
 
 function getAllFile4(){
-    $sql4 = "SELECT * FROM files WHERE id =4";
+    $sql4 = "SELECT * FROM files WHERE id =2";
 
     $fileData4 = connect_to_db()->query($sql4);
 
@@ -42,7 +42,7 @@ function getAllFile4(){
 }
 
 function getAllFile5(){
-    $sql5 = "SELECT * FROM files WHERE id =5";
+    $sql5 = "SELECT * FROM files WHERE id =3";
 
     $fileData5 = connect_to_db()->query($sql5);
 
@@ -50,7 +50,7 @@ function getAllFile5(){
 }
 
 function getAllFile6(){
-    $sql6 = "SELECT * FROM files WHERE id =6";
+    $sql6 = "SELECT * FROM files WHERE id =4";
 
     $fileData6 = connect_to_db()->query($sql6);
 
@@ -58,7 +58,7 @@ function getAllFile6(){
 }
 
 function getAllFile7(){
-    $sql7 = "SELECT * FROM files WHERE id =7";
+    $sql7 = "SELECT * FROM files WHERE id =5";
 
     $fileData7 = connect_to_db()->query($sql7);
 
@@ -66,7 +66,7 @@ function getAllFile7(){
 }
 
 function getAllFile8(){
-    $sql8 = "SELECT * FROM files WHERE id =8";
+    $sql8 = "SELECT * FROM files WHERE id =6";
 
     $fileData8 = connect_to_db()->query($sql8);
 
@@ -74,7 +74,7 @@ function getAllFile8(){
 }
 
 function getAllFile9(){
-    $sql9 = "SELECT * FROM files WHERE id =9";
+    $sql9 = "SELECT * FROM files WHERE id =7";
 
     $fileData9 = connect_to_db()->query($sql9);
 
@@ -82,7 +82,7 @@ function getAllFile9(){
 }
 
 function getAllFile10(){
-    $sql10 = "SELECT * FROM files WHERE id =10";
+    $sql10 = "SELECT * FROM files WHERE id =8";
 
     $fileData10 = connect_to_db()->query($sql10);
 
@@ -90,7 +90,7 @@ function getAllFile10(){
 }
 
 function getAllFile11(){
-    $sql11 = "SELECT * FROM files WHERE id =11";
+    $sql11 = "SELECT * FROM files WHERE id =9";
 
     $fileData11 = connect_to_db()->query($sql11);
 

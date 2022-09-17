@@ -7,6 +7,63 @@ $files15 = getAllFile15();
 $files14 = getAllFile14();
 $files13 = getAllFile13();
 
+// $todaym7 = date('Y/m/d',strtotime("today -7 day")) ;
+// $todaym6 = date('Y/m/d',strtotime("today -6 day")) ;
+// $todaym5 = date('Y/m/d',strtotime("today -5 day")) ;
+// $todaym4 = date('Y/m/d',strtotime("today -4 day")) ;
+// $todaym3 = date('Y/m/d',strtotime("today -3 day")) ;
+// $todaym2 = date('Y/m/d',strtotime("today -2 day")) ;
+// $todaym1 = date('Y/m/d',strtotime("today -1 day")) ;
+// $today = date('Y/m/d') ;
+// $todayp1 = date('Y/m/d',strtotime("today +1 day")) ;
+// $todayp2 = date('Y/m/d',strtotime("today +2 day")) ;
+// $todayp3 = date('Y/m/d',strtotime("today +3 day")) ;
+// $todayp4 = date('Y/m/d',strtotime("today +4 day")) ;
+// $todayp5 = date('Y/m/d',strtotime("today +5 day")) ;
+// $todayp6 = date('Y/m/d',strtotime("today +6 day")) ;
+// $todayp7 = date('Y/m/d',strtotime("today +7 day")) ;
+
+$pdo = connect_to_db();
+$sql = 'SELECT * FROM bookings WHERE hotels_id = 1 ' ;
+$stmt = $pdo->prepare($sql);
+
+try {
+  $status = $stmt->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$output_label[] = "";
+foreach ($result as $record) {
+  $output_label[] .= $record["date"];
+}
+
+$output_price[] = "";
+foreach ($result as $record) {
+  $output_price[] .= $record["price"];
+}
+
+$sql_ot = 'SELECT * FROM bookings WHERE hotels_id = 2 ' ;
+$stmt_ot = $pdo->prepare($sql_ot);
+
+try {
+  $status_ot = $stmt_ot->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+
+$result_ot = $stmt_ot->fetchAll(PDO::FETCH_ASSOC);
+$output_ot[] = "";
+foreach ($result_ot as $record_ot) {
+  $output_ot[] .= $record_ot["price"];
+}
+// var_dump($output_ot);
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -51,36 +108,32 @@ $files13 = getAllFile13();
             var myBarChart = new Chart(ctx, {
                 type: 'bar',
                 data: {
-                labels: ['8月1日', '8月2日', '8月3日', '8月4日', '8月5日', '8月6日', '8月7日'],
+                labels: ['<?= $output_label[1]?>','<?= $output_label[2]?>','<?= $output_label[3]?>','<?= $output_label[4]?>','<?= $output_label[5]?>','<?= $output_label[6]?>','<?= $output_label[7]?>'],
                 datasets: [
                     {
-                    label: 'OTA',
-                    data: [62, 65, 93, 85, 51, 66, 47],
+                    label: '自宿',
+                    data: ['<?= $output_price[1]?>','<?= $output_price[2]?>','<?= $output_price[3]?>','<?= $output_price[4]?>','<?= $output_price[5]?>','<?= $output_price[6]?>','<?= $output_price[7]?>'],
                     backgroundColor: "rgba(219,39,91,0.5)"
                     },{
-                    label: 'SNS',
-                    data: [55, 45, 73, 75, 41, 45, 58],
+                    label: '競合',
+                    data: ['<?= $output_ot[1]?>','<?= $output_ot[2]?>','<?= $output_ot[3]?>','<?= $output_ot[4]?>','<?= $output_ot[5]?>','<?= $output_ot[6]?>','<?= $output_ot[7]?>'],
                     backgroundColor: "rgba(130,201,169,0.5)"
-                    },{
-                    label: '公式HP',
-                    data: [33, 45, 62, 55, 31, 45, 38],
-                    backgroundColor: "rgba(255,183,76,0.5)"
                     }
                 ]
                 },
                 options: {
                 title: {
                     display: true,
-                    text: 'チャネル別予約数'
+                    text: '売上競合比較'
                 },
                 scales: {
                     yAxes: [{
                     ticks: {
                         suggestedMax: 100,
                         suggestedMin: 0,
-                        stepSize: 25,
+                        stepSize: 1000,
                         callback: function(value, index, values){
-                        return  value +  '人'
+                        return  value +  '円'
                         }
                     }
                     }]
@@ -89,52 +142,7 @@ $files13 = getAllFile13();
             });
         </script>
     </div>
-    <body>
-        <canvas id="myRaderChart"></canvas>
-        <!-- CDN -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.js"></script>
 
-        <script>
-            var ctx = document.getElementById("myRaderChart");
-            var myRadarChart = new Chart(ctx, {
-                type: 'radar', 
-                data: { 
-                    labels: ["内装", "設備", "接客", "料理", "サービス"],
-                    datasets: [{
-                        label: 'RoomA',
-                        data: [92, 72, 86, 74, 86],
-                        backgroundColor: 'RGBA(225,95,150, 0.5)',
-                        borderColor: 'RGBA(225,95,150, 1)',
-                        borderWidth: 1,
-                        pointBackgroundColor: 'RGB(46,106,177)'
-                    }, {
-                        label: 'RoomB',
-                        data: [73, 95, 80, 87, 79],
-                        backgroundColor: 'RGBA(115,255,25, 0.5)',
-                        borderColor: 'RGBA(115,255,25, 1)',
-                        borderWidth: 1,
-                        pointBackgroundColor: 'RGB(46,106,177)'
-                    }]
-                },
-                options: {
-                    title: {
-                        display: true,
-                        text: 'お客様満足度'
-                    },
-                    scale:{
-                        ticks:{
-                            suggestedMin: 0,
-                            suggestedMax: 100,
-                            stepSize: 25,
-                            callback: function(value, index, values){
-                                return  value +  '点'
-                            }
-                        }
-                    }
-                }
-            });
-        </script>
-    </body>
     <footer class="footer">
         <nav class="global-nav">
             <ul class="nav-list">

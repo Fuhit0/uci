@@ -6,15 +6,108 @@ $files19 = getAllFile19();
 $files16 = getAllFile16();
 $files17 = getAllFile17();
 $files18 = getAllFile18();
-$files3 = getAllFile3();
-$files4 = getAllFile4();
-$files5 = getAllFile5();
-$files6 = getAllFile6();
-$files7 = getAllFile7();
-$files8 = getAllFile8();
-$files9 = getAllFile9();
-$files10 = getAllFile10();
-$files11 = getAllFile11();
+
+if (
+  !isset($_POST['want_date']) || $_POST['want_date']=='' ||
+  !isset($_POST['want_person']) || $_POST['want_person']==''
+) {
+  exit('ParamError');
+}
+
+$want_date = $_POST['want_date'];
+$want_person = $_POST['want_person'];
+
+// var_dump($wante_person);
+
+$pdo = connect_to_db();
+$sql = 'SELECT *
+FROM
+    (SELECT *
+    FROM
+    (SELECT
+    stocks.hotels_id,
+    stocks.date,
+    hotels.capacity,
+    hotels.price,
+    hotels.name
+    FROM
+    stocks
+    LEFT OUTER JOIN
+    hotels
+    ON
+    stocks.hotels_id = hotels.id
+    WHERE
+    stocks.stop_flg = 0
+    AND
+    hotels.delete_flg = 0 ) as tmp1
+    WHERE
+    tmp1.date = "'. $want_date .'"
+    AND
+    tmp1.capacity >= "'. $want_person .'") as tmp2
+LEFT OUTER JOIN
+files
+ON
+tmp2.hotels_id = files.id
+';
+
+$stmt = $pdo->prepare($sql);
+
+// SQL実行（実行に失敗すると `sql error ...` が出力される）
+try {
+  $status = $stmt->execute();
+} catch (PDOException $e) {
+  echo json_encode(["sql error" => "{$e->getMessage()}"]);
+  exit();
+}
+
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+var_dump($result);
+
+$output = "";
+foreach ($result as $record) {
+  $output .= "
+    <div>
+    <h3>検索結果</h3>
+    <table>
+        <tr>
+        <td><img src='{$record["file_path"]}' alt='' width='200px' height='200px'></td>
+        <td>料金：{$record["name"]}</td>
+        <td>料金：{$record["price"]}円</td>
+        <td><form action='user_search_confirm.php' method='POST'>
+            <div>
+            <input type='hidden' name='id' value='{$record["id"]}'>
+            </div>
+            <div>
+            <input type='hidden' name='name' value='{$record["name"]}'>
+            </div>           
+            <div>
+            <input type='hidden' name='want_date' value='{$want_date}'>
+            </div>
+            <div>
+            <input type='hidden' name='want_person' value='{$want_person}'>
+            </div>
+            <div>
+            <input type='hidden' name='price' value='{$record["price"]}'>
+            </div>   
+            <div>
+            <input type='hidden' name='file_path' value='{$record["file_path"]}'>
+            </div>
+            <div>
+            <input type='hidden' name='users_id' value='1'>
+            </div>
+            <button>ここにする</button>
+            </div>
+        </form></td>
+        </tr>
+    </table>
+    </div><br>
+  ";
+}
+
+
+
+
 
 ?>
 
@@ -25,7 +118,7 @@ $files11 = getAllFile11();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ユーザートップ</title>
+    <title>予約する</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
     <link rel="stylesheet" href="User.css" type="text/css">
 </head>
@@ -52,41 +145,7 @@ $files11 = getAllFile11();
         </nav>
     </header>
     <div>
-        <div>
-            <a href="client_lp_0001.php" target="_blank">
-            <?php foreach($files3 as $file3): ?>
-                <img src="<?php echo "{$file3['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            </a>
-            <?php foreach($files4 as $file4): ?>
-                <img src="<?php echo "{$file4['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files5 as $file5): ?>
-                <img src="<?php echo "{$file5['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-        </div><br>
-        <div>
-            <?php foreach($files6 as $file6): ?>
-                <img src="<?php echo "{$file6['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files7 as $file7): ?>
-                <img src="<?php echo "{$file7['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files8 as $file8): ?>
-                <img src="<?php echo "{$file8['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-        </div><br>
-        <div>
-            <?php foreach($files9 as $file9): ?>
-                <img src="<?php echo "{$file9['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files10 as $file10): ?>
-                <img src="<?php echo "{$file10['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files11 as $file11): ?>
-                <img src="<?php echo "{$file11['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-        </div><br>
+      <?= $output ?>
     </div>
     <footer class="footer">
         <nav class="global-nav">

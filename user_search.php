@@ -43,6 +43,19 @@ $files18 = getAllFile18();
         </nav>
     </header>
     <div>
+        <form action="user_search_result.php" method="POST">
+        <fieldset>
+            <div>
+            ご希望のチェックイン日: <input type="date" name="want_date">
+            </div>
+            <div>
+            ご宿泊人数: <input type="number" name="want_person">
+            </div>
+            <div>
+            <button>検索する</button>
+            </div>
+        </fieldset>
+        </form>
 
     </div>
     <footer class="footer">

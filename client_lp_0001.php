@@ -6,15 +6,6 @@ $files19 = getAllFile19();
 $files16 = getAllFile16();
 $files17 = getAllFile17();
 $files18 = getAllFile18();
-$files3 = getAllFile3();
-$files4 = getAllFile4();
-$files5 = getAllFile5();
-$files6 = getAllFile6();
-$files7 = getAllFile7();
-$files8 = getAllFile8();
-$files9 = getAllFile9();
-$files10 = getAllFile10();
-$files11 = getAllFile11();
 
 ?>
 
@@ -25,7 +16,7 @@ $files11 = getAllFile11();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ユーザートップ</title>
+    <title>HOTEL ORIGO HAKATA - Gion -</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes" />
     <link rel="stylesheet" href="User.css" type="text/css">
 </head>
@@ -52,41 +43,62 @@ $files11 = getAllFile11();
         </nav>
     </header>
     <div>
+    <tbody>
         <div>
-            <a href="client_lp_0001.php" target="_blank">
-            <?php foreach($files3 as $file3): ?>
-                <img src="<?php echo "{$file3['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            </a>
-            <?php foreach($files4 as $file4): ?>
-                <img src="<?php echo "{$file4['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files5 as $file5): ?>
-                <img src="<?php echo "{$file5['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-        </div><br>
+            <h1>HOTEL ORIGO HAKATA - Gion -</h1>
+        </div>
         <div>
-            <?php foreach($files6 as $file6): ?>
-                <img src="<?php echo "{$file6['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files7 as $file7): ?>
-                <img src="<?php echo "{$file7['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files8 as $file8): ?>
-                <img src="<?php echo "{$file8['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-        </div><br>
+            <img src="images\lp1.jpg" alt="" width="250px">
+        </div>
         <div>
-            <?php foreach($files9 as $file9): ?>
-                <img src="<?php echo "{$file9['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files10 as $file10): ?>
-                <img src="<?php echo "{$file10['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-            <?php foreach($files11 as $file11): ?>
-                <img src="<?php echo "{$file11['file_path']}"; ?>" width="100px" height="100px">
-            <?php endforeach; ?>
-        </div><br>
+            <span>１．「人と文化が織りなすまちで」</span><br>
+            <span>
+                福岡市博多区に位置する祇園町は
+                オフィスビルが建ち並ぶ ” ビジネス街 ”として知られています。
+
+                一方で「災厄除去の祇園信仰と結びついて山笠神事として発展した」という説があり
+                約800年という歴史を持つ”博多祇園山笠”としても有名です。</span>
+        </div>
+                <div>
+            <img src="images\lp2.jpg" alt="" width="250px">
+        </div>
+        <div>
+            <span>博多の中心部。そして、長きに渡り受け継がれる伝統文化が存在する祇園町。
+                そんな魅力溢れるこのまちは今もなお、観光客やビジネスマンなど幅広い方々によって時を刻んでいます。</span>
+        </div>
+                <div>
+            <img src="images\lp3.jpg" alt="" width="250px">
+        </div>
+        <div>
+            <span>歴史や伝統あふれる昔らしさ。そして、まちの喧騒から感じられる今っぽさ。
+                そんな祇園町にスマートホテルを展開するHOTEL ORIGO 3号店が2021年8月にオープンしました。</span>
+        </div>
+                <div>
+            <img src="images\lp4.jpg" alt="" width="250px">
+        </div>
+        <div>
+            <span>夕焼けに染まりながら包まれていく夜の祇園町は、いろんな音で溢れかえります。
+
+                夕食はまちに出向き、気になるお店にふらっと立ち寄るもよし。
+                記憶のどこか一部に残るようなご宿泊様だけの素敵な時間をお過ごしください。</span>
+        </div>
+                <div>
+            <img src="images\lp5.jpg" alt="" width="250px">
+        </div>
+        <div>
+            <span>祇園の長きにわたる伝統とそんなまちに立ち並んでいくビルたちが灯す光が創る様々な記憶とをHOTEL ORIGO HAKATA - Gion -の思い出によってつなげてみませんか？</span>
+        </div>
+        <div>
+            <a href="user_search.php"><input type="button" value="予約画面へ"></a>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+
+
+    </tbody>
     </div>
     <footer class="footer">
         <nav class="global-nav">
